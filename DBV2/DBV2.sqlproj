@@ -56,5 +56,26 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="dbo\Stored Procedures\" />
+    <Folder Include="dbo\User Defined Types\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\TaxonNames.sql" />
+    <Build Include="dbo\Tables\TaxonHierarchy.sql" />
+    <Build Include="dbo\Tables\Statistics.sql" />
+    <Build Include="dbo\Tables\ProbioticTaxons.sql" />
+    <Build Include="dbo\Tables\ProbioticProducts.sql" />
+    <Build Include="dbo\Tables\ProbioticManufacturer.sql" />
+    <Build Include="dbo\Tables\Owner.sql" />
+    <Build Include="dbo\Tables\LabTestStatistics.sql" />
+    <Build Include="dbo\Tables\LabTests.sql" />
+    <Build Include="dbo\Tables\Labs.sql" />
+    <Build Include="dbo\Tables\LabResultTaxon.sql" />
+    <Build Include="dbo\Tables\LabResults.sql" />
+    <Build Include="dbo\Stored Procedures\Uploadncbi.sql" />
+    <Build Include="dbo\User Defined Types\dt_TaxonNames.sql" />
+    <Build Include="dbo\User Defined Types\dt_TaxonHierarchy.sql" />
   </ItemGroup>
 </Project>
