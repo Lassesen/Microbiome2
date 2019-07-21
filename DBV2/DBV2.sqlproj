@@ -79,5 +79,7 @@
     <Build Include="dbo\User Defined Types\dt_TaxonHierarchy.sql" />
     <Build Include="dbo\Stored Procedures\uploadUbiome.sql" />
     <Build Include="dbo\User Defined Types\dt_LabResultTaxon.sql" />
+    <Build Include="dbo\Stored Procedures\uploadTaxNameRank.sql" />
+    <Build Include="dbo\User Defined Types\dt_TaxNameRankUpload.sql" />
   </ItemGroup>
 </Project>
