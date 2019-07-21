@@ -77,5 +77,7 @@
     <Build Include="dbo\Stored Procedures\Uploadncbi.sql" />
     <Build Include="dbo\User Defined Types\dt_TaxonNames.sql" />
     <Build Include="dbo\User Defined Types\dt_TaxonHierarchy.sql" />
+    <Build Include="dbo\Stored Procedures\uploadUbiome.sql" />
+    <Build Include="dbo\User Defined Types\dt_LabResultTaxon.sql" />
   </ItemGroup>
 </Project>
