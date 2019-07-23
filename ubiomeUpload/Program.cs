@@ -10,15 +10,15 @@ namespace UbiomeUpload
     {
         static void Main(string[] args)
         {
-            FileInfo ubiomeFile = null;
+            FileInfo microbiomeFile = null;
             var showHelp = args.Length < 1;
             //Check folder exists
             if (!showHelp)
             {
-                ubiomeFile = new FileInfo(args[0]);
-                if (!ubiomeFile.Exists)
+                microbiomeFile = new FileInfo(args[0]);
+                if (!microbiomeFile.Exists)
                 {
-                    Console.Write($"The file {ubiomeFile.FullName} does not exist.");
+                    Console.Write($"The file {microbiomeFile.FullName} does not exist.");
                     showHelp = true;
                 }
 
@@ -26,61 +26,54 @@ namespace UbiomeUpload
             if (showHelp)
             {
                 Console.WriteLine(@"
-UbiomeUpload - Uploads a ubiome json file
+UbiomeUpload - Uploads a ubiome json file or thryve text file
          UbiomeUpload {filepath}
 ");
 
                 return;
             }
-
-            var filestream = new System.IO.FileStream(ubiomeFile.FullName,
-                                          System.IO.FileMode.Open,
-                                          System.IO.FileAccess.Read);
-            var file = new System.IO.StreamReader(filestream, System.Text.Encoding.UTF8, true, 128);
-            var json = JsonConvert.DeserializeObject<UbiomeHeaders>(file.ReadToEnd());
-
-            var ubiomeDataTable = new DataTable();
-            ubiomeDataTable.Columns.Add("taxon", typeof(string));
-            ubiomeDataTable.Columns.Add("taxonBaseOneMillion", typeof(double));
-            ubiomeDataTable.Columns.Add("count", typeof(int));
-            ubiomeDataTable.Columns.Add("count_norm", typeof(int));
-            foreach (var count in json.UbiomeBacteriacounts)
+            IAnalysis analysis = null;
+            var headers = File.ReadAllLines(microbiomeFile.FullName);
+            if (headers[0].IndexOf("{") == 0) //Json Ubiome
             {
-                var row = ubiomeDataTable.NewRow();
-                row["taxon"] = count.Taxon;
-                row["taxonBaseOneMillion"] = (double)count.CountNorm;
-                row["count"] = count.Count;
-                row["count_norm"] = count.CountNorm;
-                ubiomeDataTable.Rows.Add(row);
+                analysis = new Ubiome(microbiomeFile);
+            }
+            else
+                if (headers[0].IndexOf("\"taxon_id\",\"rank\",\"name\",\"parent\",\"count\"", StringComparison.OrdinalIgnoreCase) == 0) //Json Ubiome
+            {
+                analysis = new Thryve(microbiomeFile);
+            }
+            if (analysis == null)
+            {
+                Console.WriteLine("Failed to identify file type");
+                return;
             }
             var connectionString = File.ReadAllText("DBString.txt");
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                using (SqlCommand cmd = new SqlCommand("uploadubiome", conn))
+                using (SqlCommand cmd = new SqlCommand("uploadtaxon", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.CommandTimeout = 900;
                     SqlParameter hParameter = new SqlParameter();
                     hParameter.ParameterName = "@Data";
                     hParameter.SqlDbType = SqlDbType.Structured;
-                    hParameter.Value = ubiomeDataTable;
+                    hParameter.Value = analysis.AsDataTable;
                     cmd.Parameters.Add(hParameter);
-                    cmd.Parameters.AddWithValue("ownerEmail", "Ken@Lassesen.com");
-                    cmd.Parameters.AddWithValue("sampleId", json.SequencingRevision);
-                    DateTime sampleDate = DateTime.UtcNow;
-                    DateTime.TryParse(json.SamplingTime, out sampleDate);
-                    if (sampleDate > new DateTime(2004, 1, 1))
-                    {
-                        cmd.Parameters.AddWithValue("SampleDate", sampleDate);
-                    }
-                    var dataSet = new DataSet("ubiome");
+                    cmd.Parameters.AddWithValue("@ownerEmail", "Ken@Lassesen.com");
+                    cmd.Parameters.AddWithValue("@sampleId", analysis.SampleId);
+                    cmd.Parameters.AddWithValue("@SampleDate", analysis.SampleDateTime);
+                    cmd.Parameters.AddWithValue("@LabName", analysis.LabName);
+                    cmd.Parameters.AddWithValue("@LabTestName", analysis.LabTestName);
+                    // For non matches 
+                    var dataSet = new DataSet(analysis.LabTestName);
                     var sqladap = new SqlDataAdapter(cmd);
                     sqladap.Fill(dataSet);
                     if (dataSet.Tables[0].Rows.Count > 0)
                     {
-                        Console.WriteLine($"Could not locate all taxons in ubiome  {json.SequencingRevision}");
-                        dataSet.WriteXml($"Missing_{json.SequencingRevision}.xml");
+                        Console.WriteLine($"Could not locate all taxons in sample  {analysis.SampleId}");
+                        dataSet.WriteXml($"Missing_{analysis.SampleId}.xml");
                     }
                 }
             }
