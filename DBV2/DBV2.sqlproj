@@ -94,5 +94,7 @@
     <Build Include="dbo\Tables\ICDAltName.sql" />
     <Build Include="dbo\Stored Procedures\uploadTaxon.sql" />
     <Build Include="dbo\Stored Procedures\uploadIcd.sql" />
+    <Build Include="dbo\Tables\Citation.sql" />
+    <Build Include="dbo\Stored Procedures\UploadPubMed.sql" />
   </ItemGroup>
 </Project>
