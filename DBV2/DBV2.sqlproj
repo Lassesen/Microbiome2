@@ -96,5 +96,23 @@
     <Build Include="dbo\Stored Procedures\uploadIcd.sql" />
     <Build Include="dbo\Tables\Citation.sql" />
     <Build Include="dbo\Stored Procedures\UploadPubMed.sql" />
+    <Build Include="dbo\Tables\ReportContinuous.sql" />
+    <Build Include="dbo\Tables\ReportCategory.sql" />
+    <Build Include="dbo\Tables\OwnerReport.sql" />
+    <Build Include="dbo\Tables\LabTestCoreStatistics.sql" />
+    <Build Include="dbo\Tables\Labels.sql" />
+    <Build Include="dbo\Tables\DisplayHierarchy.sql" />
+    <Build Include="dbo\Tables\DisplayGroup.sql" />
+    <Build Include="dbo\Tables\ContinuousReference.sql" />
+    <Build Include="dbo\Tables\ContinuousRanges.sql" />
+    <Build Include="dbo\Tables\ContinuousDisplay.sql" />
+    <Build Include="dbo\Tables\CategoryReference.sql" />
+    <Build Include="dbo\Tables\CategoryDisplay.sql" />
+    <Build Include="dbo\Stored Procedures\uploadTaxNameRankData.sql" />
+    <Build Include="dbo\Stored Procedures\updateCustomLabTestStatics.sql" />
+    <Build Include="dbo\Stored Procedures\updateCoreLabTestStatics.sql" />
+    <Build Include="dbo\Stored Procedures\getTaxonWithValues.sql" />
+    <Build Include="dbo\User Defined Types\dt_LabTestCustomStatistics.sql" />
+    <Build Include="dbo\User Defined Types\dt_LabTestCoreStatistics.sql" />
   </ItemGroup>
 </Project>

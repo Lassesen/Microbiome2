@@ -9,7 +9,7 @@ namespace TaxonNameUpload
 {
     public class XenoGene
     {
-        DataTable _dataTable = new DataTable();
+        DataTable _dataTable = new DataTable("XenoGene");
         public XenoGene(FileInfo file)
         {
             _dataTable.Columns.Add("tax_rank", typeof(string));

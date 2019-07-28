@@ -38,7 +38,7 @@ UploadXenoGene - Uploads a PDF file from XenoGene Spain
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                using (SqlCommand cmd = new SqlCommand("uploadTaxNameRank", conn))
+                using (SqlCommand cmd = new SqlCommand("uploadTaxNameRankData", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.CommandTimeout = 900;
@@ -58,6 +58,7 @@ UploadXenoGene - Uploads a PDF file from XenoGene Spain
                     sqladap.Fill(dataSet);
                     if (dataSet.Tables[0].Rows.Count > 0)
                     {
+                        dataSet.Tables[0].TableName = "XenoGene";
                         Console.WriteLine($"Could not locate all taxon names in   {parsedFile.LabTest}");
                         dataSet.WriteXml($"Missing_{parsedFile.SampleId}.xml");
                     }
@@ -66,3 +67,4 @@ UploadXenoGene - Uploads a PDF file from XenoGene Spain
         }
     }
 }
+ 
