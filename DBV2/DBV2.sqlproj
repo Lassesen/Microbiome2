@@ -114,5 +114,7 @@
     <Build Include="dbo\Stored Procedures\getTaxonWithValues.sql" />
     <Build Include="dbo\User Defined Types\dt_LabTestCustomStatistics.sql" />
     <Build Include="dbo\User Defined Types\dt_LabTestCoreStatistics.sql" />
+    <Build Include="dbo\Tables\CategoryContinuousAssociation.sql" />
+    <Build Include="dbo\Tables\CategoryAssociations.sql" />
   </ItemGroup>
 </Project>
