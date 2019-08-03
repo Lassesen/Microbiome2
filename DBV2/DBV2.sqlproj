@@ -116,5 +116,19 @@
     <Build Include="dbo\User Defined Types\dt_LabTestCoreStatistics.sql" />
     <Build Include="dbo\Tables\CategoryContinuousAssociation.sql" />
     <Build Include="dbo\Tables\CategoryAssociations.sql" />
+    <Build Include="dbo\Tables\UnitsOfMeasure.sql" />
+    <Build Include="dbo\Tables\UnitOfMeasureConversion.sql" />
+    <Build Include="dbo\Tables\TaxonModifierCitation.sql" />
+    <Build Include="dbo\Tables\ProbioticsModifier.sql" />
+    <Build Include="dbo\Tables\ModifierType.sql" />
+    <Build Include="dbo\Tables\Modifiers.sql" />
+    <Build Include="dbo\Tables\ModifierComposition.sql" />
+    <Build Include="dbo\Tables\ModifierClassification.sql" />
+    <Build Include="dbo\Tables\ModifierAlternativeName.sql" />
+    <Build Include="dbo\Tables\IcdModifierCitation.sql" />
+    <Build Include="dbo\Tables\ContinuousModifierCitation.sql" />
+    <Build Include="dbo\Tables\ContinuousAlternativeName.sql" />
+    <Build Include="dbo\Tables\CategoryModifierCitation.sql" />
+    <Build Include="dbo\Tables\CategoryAlternativeName.sql" />
   </ItemGroup>
 </Project>
