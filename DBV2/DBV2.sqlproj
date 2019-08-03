@@ -60,6 +60,7 @@
     <Folder Include="dbo\Tables\" />
     <Folder Include="dbo\Stored Procedures\" />
     <Folder Include="dbo\User Defined Types\" />
+    <Folder Include="dbo\Views\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\TaxonNames.sql" />
@@ -130,5 +131,8 @@
     <Build Include="dbo\Tables\ContinuousAlternativeName.sql" />
     <Build Include="dbo\Tables\CategoryModifierCitation.sql" />
     <Build Include="dbo\Tables\CategoryAlternativeName.sql" />
+    <Build Include="dbo\Tables\LabResultReport.sql" />
+    <Build Include="dbo\Views\ViewNonParametric.sql" />
+    <Build Include="dbo\Stored Procedures\GetNonParametricCategoryDataSet.sql" />
   </ItemGroup>
 </Project>
