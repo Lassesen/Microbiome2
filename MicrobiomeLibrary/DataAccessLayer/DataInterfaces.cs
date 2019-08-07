@@ -88,13 +88,13 @@ namespace MicrobiomeLibrary.DataAccessLayer
                 }
             }
         }
-        public static DataSet ExportFromV1()
+        public static DataSet Export()
         {
             var reply = new DataSet();
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
                 conn.Open();
-                using (SqlCommand cmd = new SqlCommand($"[ExportToV2]", conn))
+                using (SqlCommand cmd = new SqlCommand($"[Export]", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.CommandTimeout = 900;

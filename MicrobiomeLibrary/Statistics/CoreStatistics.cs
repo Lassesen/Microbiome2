@@ -43,7 +43,7 @@ namespace MicrobiomeLibrary.Statistics
         public void ProcessATaxon(int taxon, double[] values)
         {
             var row = _dataTable.NewRow();
-            if (values.Length < 16) return;
+            if (values.Length < _quantiles * LabTests.MinCountInQuantile) return;
             var stats = new DescriptiveStatistics(values);
             row["taxon"] = taxon;
             row["Mean"] = VerifyRange(stats.Mean);
