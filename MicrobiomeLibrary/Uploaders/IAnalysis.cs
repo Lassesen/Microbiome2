@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Data;
 
-namespace Uploaders
+namespace MicrobiomeLibrary.Uploaders
 {
     interface IAnalysis
     {

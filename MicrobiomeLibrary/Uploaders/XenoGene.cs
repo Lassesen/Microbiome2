@@ -1,12 +1,13 @@
-﻿using DataAccessLayer;
-using iTextSharp.text.pdf;
+﻿using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
+using MicrobiomeLibrary.DataAccessLayer;
 using System;
 using System.Data;
 using System.IO;
 using System.Text;
 
-namespace Uploaders
+
+namespace MicrobiomeLibrary.Uploaders
 {
     public class XenoGene : IAnalysis
     {

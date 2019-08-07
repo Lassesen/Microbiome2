@@ -1,9 +1,9 @@
-﻿using DataAccessLayer;
+﻿using MicrobiomeLibrary.DataAccessLayer;
 using System;
 using System.Data;
 using System.IO;
 
-namespace Uploaders
+namespace MicrobiomeLibrary.Uploaders
 {
     public class AmericanGut : IAnalysis
     {
@@ -30,7 +30,7 @@ namespace Uploaders
                         count = count * 1000000;
                         var parts2 = parts1[0].Split(sep2, StringSplitOptions.RemoveEmptyEntries);
                         // We start with the last one and walk back.
-                        for (var j= parts2.Length-1; j > 0; j-- )
+                        for (var j = parts2.Length - 1; j > 0; j--)
                         {
                             var part = parts2[j];
                             if (part.Length > 5) //elimate empty ones, i.e. ;g__ with nothing
@@ -49,7 +49,7 @@ namespace Uploaders
                                 name = part.Substring(3);
                                 break;
                             }
-                           
+
                         }
                         if (name.Length > 3)
                         {
@@ -63,8 +63,8 @@ namespace Uploaders
                 }
             }
         }
-  
-        public string SampleId         { get; set; }
+
+        public string SampleId { get; set; }
         public DateTime SampleDateTime { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public string LabName => "AmericanGut";

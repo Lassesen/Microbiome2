@@ -1,9 +1,10 @@
-﻿using System;
+﻿using MicrobiomeLibrary.DataAccessLayer;
+using Newtonsoft.Json;
+using System;
 using System.Data;
 using System.IO;
-using DataAccessLayer;
-using Newtonsoft.Json;
-namespace Uploaders
+
+namespace MicrobiomeLibrary.Uploaders
 {
     class Ubiome : IAnalysis
     {

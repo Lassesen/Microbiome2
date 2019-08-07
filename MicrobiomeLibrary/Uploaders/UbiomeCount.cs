@@ -1,9 +1,7 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Uploaders
+
+namespace MicrobiomeLibrary.Uploaders
 {
     public class UbiomeCount
     {

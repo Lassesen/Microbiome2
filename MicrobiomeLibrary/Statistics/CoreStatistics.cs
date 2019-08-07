@@ -1,13 +1,9 @@
-﻿using iTextSharp.text.pdf;
-using iTextSharp.text.pdf.parser;
-using MathNet.Numerics.Statistics;
+﻿using MathNet.Numerics.Statistics;
 using System;
 using System.Data;
-using System.IO;
 using System.Linq;
-using System.Text;
 
-namespace Statistics
+namespace MicrobiomeLibrary.Statistics
 {
     public class CoreStatistics
     {
@@ -27,12 +23,12 @@ namespace Statistics
             _dataTable.Columns.Add("Skewness", typeof(double));
             _dataTable.Columns.Add("Kurtosis", typeof(double));
             _dataTable.Columns.Add("Count", typeof(double));
-             
+
             for (var q = 1; q < quantiles; q++)
             {
                 _dataTable.Columns.Add($"q{quantiles}_{q}", typeof(double));
             }
-            
+
         }
         /// <summary>
         /// Converting from double to sql float can have overflow
@@ -41,26 +37,27 @@ namespace Statistics
         /// <returns></returns>
         private double VerifyRange(double value)
         {
-            if(double.IsNaN(value))  value = double.MaxValue;
-             return value;
+            if (double.IsNaN(value)) value = double.MaxValue;
+            return value;
         }
         public void ProcessATaxon(int taxon, double[] values)
         {
             var row = _dataTable.NewRow();
+            if (values.Length < 16) return;
             var stats = new DescriptiveStatistics(values);
             row["taxon"] = taxon;
             row["Mean"] = VerifyRange(stats.Mean);
             row["Minimum"] = VerifyRange(stats.Minimum);
             row["Maximum"] = VerifyRange(stats.Maximum);
-            row["Skewness"] = VerifyRange(stats.Skewness) ;
-            row["Kurtosis"] = VerifyRange(stats.Kurtosis) ;
-            row["StandardDeviation"] = VerifyRange(stats.StandardDeviation)  ;
+            row["Skewness"] = VerifyRange(stats.Skewness);
+            row["Kurtosis"] = VerifyRange(stats.Kurtosis);
+            row["StandardDeviation"] = VerifyRange(stats.StandardDeviation);
             row["Variance"] = VerifyRange(stats.Variance);
             row["Count"] = VerifyRange(stats.Count);
             var index = 0.5 * (double)stats.Count;
             var indexLow = (int)Math.Floor(index);
             var indexHigh = (int)Math.Ceiling(index);
-            if (indexHigh > values.Length-1) indexHigh = indexLow;
+            if (indexHigh > values.Length - 1) indexHigh = indexLow;
             var qValue = (values[indexLow] + values[indexHigh]) / 2;
             row["Median"] = qValue;
             row["Mode"] = values.GroupBy(v => v)
@@ -74,10 +71,10 @@ namespace Statistics
                 index = q / _quantiles * (double)stats.Count;
                 indexLow = (int)Math.Floor(index);
                 indexHigh = (int)Math.Ceiling(index);
-                if (indexHigh > values.Length-1) indexHigh = indexLow;
+                if (indexHigh > values.Length - 1) indexHigh = indexLow;
                 qValue = (values[indexLow] + values[indexHigh]) / 2;
                 var colName = $"q{_quantiles}_{(int)q}";
-                row[colName] = qValue;             
+                row[colName] = qValue;
             }
             _dataTable.Rows.Add(row);
         }

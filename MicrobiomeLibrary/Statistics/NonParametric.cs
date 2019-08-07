@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Text;
 
 namespace MicrobiomeLibrary.Statistics
 {
@@ -17,7 +16,7 @@ namespace MicrobiomeLibrary.Statistics
         /// <returns></returns>
         public static DataTable CategoricSignficance(DataSet dataSet)
         {
-            var columnNames= dataSet.Tables[0].DefaultView.ToTable(true, "StatisticsName");
+            var columnNames = dataSet.Tables[0].DefaultView.ToTable(true, "StatisticsName");
             var boundCount = columnNames.Rows.Count + 1;
             var taxons = dataSet.Tables[0].DefaultView.ToTable(true, "Taxon");
             var eureka = new DataTable();
@@ -26,7 +25,7 @@ namespace MicrobiomeLibrary.Statistics
             eureka.Columns.Add("PValue", typeof(double));
             eureka.Columns.Add("HighIndex", typeof(int));
             eureka.Columns.Add("Significant", typeof(double));
-            for (var c=0; c < boundCount;c++)
+            for (var c = 0; c < boundCount; c++)
             {
                 eureka.Columns.Add($"Quantile{c}", typeof(double));
             }
@@ -36,8 +35,8 @@ namespace MicrobiomeLibrary.Statistics
             foreach (DataRow qrow in dataSet.Tables[0].Rows)
             {
                 var taxon = (int)qrow["taxon"];
-                
-                if(taxon == lastTaxon)
+
+                if (taxon == lastTaxon)
                 {
                     bounds.Add((double)qrow["value"]);
                     sampleCount = (double)qrow["Count"];
@@ -51,7 +50,7 @@ namespace MicrobiomeLibrary.Statistics
             }
             bounds.Sort();
             lastTaxon = ProcessTaxon(dataSet, boundCount, eureka, lastTaxon, bounds, lastTaxon, sampleCount);
-            return eureka;               
+            return eureka;
         }
 
         private static int ProcessTaxon(DataSet dataSet, int boundCount, DataTable eureka, int lastTaxon, List<double> bounds, int taxon, double sampleCount)
@@ -75,7 +74,7 @@ namespace MicrobiomeLibrary.Statistics
                 var nameRow = dataSet.Tables[2].Select($"[taxon]={lastTaxon}");
                 var newRow = eureka.NewRow();
                 newRow["taxon"] = taxon;
-                newRow["taxonName"] =(string) nameRow[0]["taxonName"];
+                newRow["taxonName"] = (string)nameRow[0]["taxonName"];
                 var highIndex = 0;
                 var highCount = count[0];
                 for (var c = 0; c < boundCount; c++)

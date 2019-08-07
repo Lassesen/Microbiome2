@@ -1,9 +1,9 @@
-﻿using System;
+﻿using MicrobiomeLibrary.DataAccessLayer;
+using System;
 using System.Data;
 using System.IO;
-using DataAccessLayer;
-using Newtonsoft.Json;
-namespace Uploaders
+
+namespace MicrobiomeLibrary.Uploaders
 {
     class Thryve : IAnalysis
     {
