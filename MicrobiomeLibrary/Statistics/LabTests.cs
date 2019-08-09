@@ -22,7 +22,7 @@ namespace MicrobiomeLibrary.Statistics
                 {
                     if (values.Count > 0 && activeTaxon > 0)
                     {
-                        if (values.Count >= quantiles* MinCountInQuantile)
+                        if (values.Count >= quantiles * MinCountInQuantile)
                         {
                             statistics.ProcessATaxon(activeTaxon, values.ToArray());
                         }
@@ -35,7 +35,7 @@ namespace MicrobiomeLibrary.Statistics
             // get the last taxon processed
             if (values.Count >= quantiles * MinCountInQuantile)
                 statistics.ProcessATaxon(activeTaxon, values.ToArray());
-             
+
             DataInterfaces.UpdateStatistics(statistics.StatsDatatable, labTestId);
             return statistics.StatsDatatable.Rows.Count > 5;
         }
@@ -47,7 +47,7 @@ namespace MicrobiomeLibrary.Statistics
                 ComputeOneLab((int)row["LabTestId"], quantiles);
             }
         }
-        public static void ComputeFull( )
+        public static void ComputeFull()
         {
             var labTests = DataInterfaces.GetLabTests();
             foreach (DataRow row in labTests.Rows)
