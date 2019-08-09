@@ -134,5 +134,18 @@
     <Build Include="dbo\Tables\LabResultReport.sql" />
     <Build Include="dbo\Views\ViewNonParametric.sql" />
     <Build Include="dbo\Stored Procedures\GetNonParametricCategoryDataSet.sql" />
+    <Build Include="dbo\Stored Procedures\ImportStats.sql" />
+    <Build Include="dbo\Stored Procedures\ImportData.sql" />
+    <Build Include="dbo\Stored Procedures\ExportData.sql" />
+    <Build Include="dbo\User Defined Types\tbi_Table9.sql" />
+    <Build Include="dbo\User Defined Types\tbi_Table8.sql" />
+    <Build Include="dbo\User Defined Types\tbi_Table7.sql" />
+    <Build Include="dbo\User Defined Types\tbi_Table6.sql" />
+    <Build Include="dbo\User Defined Types\tbi_Table5.sql" />
+    <Build Include="dbo\User Defined Types\tbi_Table4.sql" />
+    <Build Include="dbo\User Defined Types\tbi_Table3.sql" />
+    <Build Include="dbo\User Defined Types\tbi_Table2.sql" />
+    <Build Include="dbo\User Defined Types\tbi_Table1.sql" />
+    <Build Include="dbo\User Defined Types\tbi_Table0.sql" />
   </ItemGroup>
 </Project>
