@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Text;
 
@@ -28,6 +29,33 @@ namespace MicrobiomeLibrary.DataAccessLayer
             sb.Length = sb.Length - 3;
             sb.Append(")");
             File.WriteAllText($"tbi_{t.TableName}.sql", sb.ToString());
+        }
+        public static List<string> ToCsvString(this DataTable t, char delimiter = ',')
+        {
+            var reply = new List<string>();
+            var sb = new StringBuilder();
+            foreach (DataColumn col in t.Columns)
+            {
+                //remove delimiters from names
+                sb.Append($"{ col.ColumnName.Replace(delimiter, ' ')}{delimiter}");
+            }
+            sb.Length--;
+            reply.Add(sb.ToString());
+            foreach (DataRow row in t.Rows)
+            {
+                sb.Clear();
+                foreach (DataColumn col in t.Columns)
+                {
+                    if (!row.IsNull(col.ColumnName))
+                    {
+                        sb.Append(row[col.ColumnName].ToString());
+                    }
+                    sb.Append(delimiter);
+                }
+                sb.Length--;
+                reply.Add(sb.ToString());
+            }
+            return reply;
         }
     }
 }

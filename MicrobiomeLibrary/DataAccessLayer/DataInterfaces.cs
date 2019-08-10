@@ -176,6 +176,75 @@ namespace MicrobiomeLibrary.DataAccessLayer
                 }
             }
         }
+        private static DataTable GetDataTable(string tsql)
+        {
+            var reply = new DataSet();
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                conn.Open();
+                using (SqlCommand cmd = new SqlCommand(tsql, conn))
+                {
+                    var adapter = new SqlDataAdapter(cmd);
+                    adapter.Fill(reply);
+                    return reply.Tables[0];
+                }
+            }
+        }
+        public static DataTable GetFlatTaxonomy(string taxRank = "species%")
+        {
+            string sql = "Select SyncGuid,N.TaxonName ColumnName, BaseOneMillion Value From LabResultTaxon T (NOLOCK) Join LabResults R (NOLOCK) ON T.LabResultsId=R.LabResultsId JOIN TaxonNames N (NOLOCK) ON N.Taxon=T.Taxon JOIN TaxonHierarchy H (NOLOCK) ON H.Taxon=N.Taxon "
++ " Where T.Taxon  in (Select Taxon From LabResultTaxon group by Taxon Having Count(1) > 10)"
++ $" AND H.[Rank] Like'species%' Order by SyncGuid";
+            var data = GetDataTable(sql);
+            return GetFlatBySyncGuid(data);
+        }
+        public static DataTable GetFlatContinuous()
+        {
+            string sql = "Select  SyncGuid,ContinuousName ColumnName, C.Reading Value from ReportContinuous C (NOLOCK) JOIN ContinuousReference R (NOLOCK) ON C.ContinuousId=R.ContinuousId Join OwnerReport O (NOLOCK) ON O.ReportId=C.ReportId";
+            var data = GetDataTable(sql);
+            return GetFlatBySyncGuid(data);
+        }
+        public static DataTable GetFlatCategory()
+        {
+            string sql = "Select  SyncGuid,CategoryName ColumnName, cast(1.0 as float) Value from ReportCategory C (NOLOCK) JOIN CategoryReference R (NOLOCK) ON C.CategoryId=R.CategoryId Join OwnerReport O (NOLOCK) ON O.ReportId=C.ReportId";
+            var data = GetDataTable(sql);
+            return GetFlatBySyncGuid(data);
+        }
+        public static DataTable GetLabReport()
+        {
+            string sql = "Select  L.SyncGuid,O.LabResultsId ColumnName, cast(1.0 as float) Value from LabResultReport O (NOLOCK) JOIN OwnerReport R (NOLOCK) ON R.ReportId=O.ReportId JOIN LabResults L (NOLOCK) ON L.LabResultsId=O.ReportId ";
+            var data = GetDataTable(sql);
+            return GetFlatBySyncGuid(data);
+        }
+        private static DataTable GetFlatBySyncGuid(DataTable data)
+        {
+            var reply = new DataTable();
+            reply.Columns.Add("SyncGuid", typeof(Guid));
+            Guid lastGuid = Guid.Empty;
+            DataRow newrow = reply.NewRow();
+            foreach (DataRow row in data.Rows)
+            {
+                var guid = (Guid)row["SyncGuid"];
+                if (guid != lastGuid)
+                {
+                    if (lastGuid != Guid.Empty)
+                    {
+                        newrow["SyncGuid"] = lastGuid;
+                        reply.Rows.Add(newrow);
+                        newrow = reply.NewRow();
+                        newrow["SyncGuid"] = guid;
+                    }
+                    lastGuid = guid;
+                }
+                string columnName = (string)row["ColumnName"];
+                if (!reply.Columns.Contains(columnName))
+                    reply.Columns.Add(columnName, typeof(double));
+                newrow[(string)row["ColumnName"]] = (double)row["Value"];
+            }
+            reply.Rows.Add(newrow);
+            return reply;
+
+        }
         public static void Import(DataSet dataSet)
         {
             using (SqlConnection conn = new SqlConnection(ConnectionString))
